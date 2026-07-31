@@ -1552,7 +1552,10 @@
 
         async function loadEmployees(search = '') {
             try {
-                const url = search ? `${API_URL}/employees?search=${search}` : `${API_URL}/employees`;
+                // limit=10000 — тянем всех сотрудников сразу; фильтрация/поиск/сортировка идут на клиенте
+                const params = new URLSearchParams({ limit: '10000' });
+                if (search) params.set('search', search);
+                const url = `${API_URL}/employees?${params.toString()}`;
                 const res = await fetch(url, { headers: getHeaders() });
                 const data = await res.json();
                 
