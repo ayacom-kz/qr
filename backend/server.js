@@ -53,8 +53,13 @@ app.get('/badge/:token', (req, res) => {
     });
 });
 
-// Главная
+// Главная — сразу ведём в приложение (админка сама перекинет на логин, если не вошёл)
 app.get('/', (req, res) => {
+    res.redirect('/admin/');
+});
+
+// Технический эндпоинт статуса (для пингера/проверок) — без редиректа
+app.get('/health', (req, res) => {
     res.json({ service: 'AYACOM QR Badge System', status: 'running' });
 });
 

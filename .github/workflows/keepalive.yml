@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Ping site
         run: |
-          echo "Пингую https://ayacom-qr-badge.onrender.com/ ..."
-          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 40 https://ayacom-qr-badge.onrender.com/)
+          echo "Пингую https://ayacom-qr-badge.onrender.com/health ..."
+          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 40 https://ayacom-qr-badge.onrender.com/health)
           echo "HTTP $code"
           # 200 = живой; при пробуждении из сна первый ответ может быть медленным — это норма
