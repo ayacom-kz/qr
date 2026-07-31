@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "AYACOM Corporate QR Badge System (PostgreSQL / Supabase)",
   "main": "backend/server.js",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "start": "node backend/server.js",
     "dev": "npx nodemon backend/server.js",
