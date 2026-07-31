@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AYACOM — Корпоративный бейдж</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <style>
+        :root {
+            --primary: #ED2424;
+            --primary-soft: rgba(237, 36, 36, 0.06);
+            --primary-border: rgba(237, 36, 36, 0.12);
+            --bg: #F5F5F7;
+            --white: #FFFFFF;
+            --text: #111111;
+            --text-secondary: #71717A;
+            --text-muted: #A1A1AA;
+            --border: #E4E4E7;
+            --border-hover: #D4D4D8;
+            --green: #16A34A;
+            --green-soft: rgba(22, 163, 74, 0.06);
+            --green-border: rgba(22, 163, 74, 0.15);
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== HEADER ===== */
+        .page-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .page-header img {
+            height: 28px;
+            margin-bottom: 6px;
+        }
+
+        .page-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: 0.3px;
+        }
+
+        /* ===== CARD ===== */
+        .badge-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        /* ===== TOP ACCENT ===== */
+        .card-accent {
+            height: 3px;
+            background: var(--primary);
+        }
+
+        /* ===== IDENTITY ===== */
+        .identity-section {
+            padding: 28px 24px 24px;
+            text-align: center;
+        }
+
+        .avatar-wrapper {
+            width: 88px;
+            height: 88px;
+            margin: 0 auto 18px;
+            position: relative;
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border);
+            background: var(--bg);
+        }
+
+        .avatar-placeholder {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar-placeholder i {
+            width: 32px;
+            height: 32px;
+            color: var(--text-muted);
+        }
+
+        .online-dot {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            width: 14px;
+            height: 14px;
+            background: var(--green);
+            border: 2.5px solid var(--white);
+            border-radius: 50%;
+        }
+
+        .online-dot.inactive {
+            background: var(--text-muted);
+        }
+
+        .employee-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .employee-position {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+
+        .verified-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .verified-tag i {
+            width: 14px;
+            height: 14px;
+        }
+
+        .verified-tag.active {
+            background: var(--green-soft);
+            color: var(--green);
+            border: 1px solid var(--green-border);
+        }
+
+        .verified-tag.inactive {
+            background: rgba(113, 113, 122, 0.06);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+
+        /* ===== SEPARATOR ===== */
+        .separator {
+            height: 1px;
+            background: var(--border);
+            margin: 0 24px;
+        }
+
+        /* ===== INFO LIST ===== */
+        .info-list {
+            padding: 8px 24px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-item-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .info-item-icon i {
+            width: 16px;
+            height: 16px;
+            color: var(--text-secondary);
+        }
+
+        .info-item-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .info-item-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 1px;
+        }
+
+        .info-item-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ===== DISCOUNT ===== */
+        .discount-section {
+            padding: 0 24px 20px;
+        }
+
+        .discount-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .discount-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .discount-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-soft);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .discount-icon i {
+            width: 18px;
+            height: 18px;
+            color: var(--primary);
+        }
+
+        .discount-meta-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-bottom: 1px;
+        }
+
+        .discount-tier-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .discount-amount {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .discount-amount span {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        /* ===== FOOTER ===== */
+        .card-footer {
+            padding: 14px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .footer-left i {
+            width: 13px;
+            height: 13px;
+            color: var(--green);
+        }
+
+        .footer-right {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* ===== POWERED ===== */
+        .powered {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* ===== LOADING ===== */
+        .state-loading {
+            padding: 64px 24px;
+            text-align: center;
+        }
+
+        .spinner {
+            width: 28px;
+            height: 28px;
+            border: 2.5px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto 14px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .state-loading p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* ===== ERROR ===== */
+        .state-error {
+            padding: 56px 24px;
+            text-align: center;
+            display: none;
+        }
+
+        .error-circle {
+            width: 56px;
+            height: 56px;
+            background: var(--primary-soft);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+
+        .error-circle i {
+            width: 24px;
+            height: 24px;
+            color: var(--primary);
+        }
+
+        .error-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .error-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .error-code {
+            display: inline-block;
+            font-size: 11px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            color: var(--text-muted);
+            background: var(--bg);
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        /* ===== BADGE CONTENT ===== */
+        .state-content {
+            display: none;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 440px) {
+            body { padding: 16px; }
+            .identity-section { padding: 24px 20px 20px; }
+            .info-list { padding: 8px 20px; }
+            .discount-section { padding: 0 20px 16px; }
+            .card-footer { padding: 12px 20px; }
+            .separator { margin: 0 20px; }
+            .employee-name { font-size: 18px; }
+            .discount-amount { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <img src="/public/assets/logo.png" alt="AYACOM">
+            <p class="page-subtitle">Корпоративный бейдж сотрудника</p>
+        </div>
+
+        <!-- Badge Card -->
+        <div class="badge-card">
+
+            <div class="card-accent"></div>
+
+            <!-- Loading -->
+            <div class="state-loading" id="stateLoading">
+                <div class="spinner"></div>
+                <p>Загрузка бейджа...</p>
+            </div>
+
+            <!-- Error -->
+            <div class="state-error" id="stateError">
+                <div class="error-circle">
+                    <i data-lucide="shield-x"></i>
+                </div>
+                <h2 class="error-title" id="errorTitle">Бейдж не найден</h2>
+                <p class="error-desc" id="errorDesc">QR-код недействителен или бейдж деактивирован</p>
+                <div class="error-code" id="errorCode">NOT_FOUND</div>
+            </div>
+
+            <!-- Content -->
+            <div class="state-content" id="stateContent">
+
+                <!-- Identity -->
+                <div class="identity-section">
+                    <div class="avatar-wrapper">
+                        <img id="photoImg" src="" alt="" class="avatar" style="display:none;">
+                        <div id="photoPlaceholder" class="avatar-placeholder">
+                            <i data-lucide="user"></i>
+                        </div>
+                        <div class="online-dot" id="onlineDot"></div>
+                    </div>
+
+                    <h1 class="employee-name" id="employeeName"></h1>
+                    <p class="employee-position" id="employeePosition"></p>
+
+                    <span class="verified-tag active" id="verifiedTag">
+                        <i data-lucide="shield-check"></i>
+                        <span id="verifiedText">Подтверждённый сотрудник</span>
+                    </span>
+                </div>
+
+                <div class="separator"></div>
+
+                <!-- Info -->
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="info-item-icon">
+                            <i data-lucide="briefcase"></i>
+                        </div>
+                        <div class="info-item-text">
+                            <div class="info-item-label">Должность</div>
+                            <div class="info-item-value" id="infoPosition"></div>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-item-icon">
+                            <i data-lucide="building-2"></i>
+                        </div>
+                        <div class="info-item-text">
+                            <div class="info-item-label">Отдел</div>
+                            <div class="info-item-value" id="infoDepartment"></div>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-item-icon">
+                            <i data-lucide="hash"></i>
+                        </div>
+                        <div class="info-item-text">
+                            <div class="info-item-label">ID сотрудника</div>
+                            <div class="info-item-value" id="infoId"></div>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-item-icon">
+                            <i data-lucide="building"></i>
+                        </div>
+                        <div class="info-item-text">
+                            <div class="info-item-label">Компания</div>
+                            <div class="info-item-value">AYACOM</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="separator"></div>
+
+                <!-- Discount -->
+                <div class="discount-section" style="padding-top: 20px;">
+                    <div class="discount-card">
+                        <div class="discount-left">
+                            <div class="discount-icon">
+                                <i data-lucide="percent"></i>
+                            </div>
+                            <div>
+                                <div class="discount-meta-label">Скидка в ресторанах</div>
+                                <div class="discount-tier-name" id="tierName"></div>
+                            </div>
+                        </div>
+                        <div class="discount-amount" id="tierPercent">
+                            10<span>%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="card-footer">
+                    <div class="footer-left">
+                        <i data-lucide="check-circle-2"></i>
+                        Подтверждено AYACOM
+                    </div>
+                    <div class="footer-right" id="footerDate"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Powered -->
+        <p class="powered">© <span id="yearText"></span> AYACOM</p>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+        document.getElementById('yearText').textContent = new Date().getFullYear();
+
+        // Получаем токен из URL
+        let token = null;
+        const fullPath = window.location.pathname;
+        console.log('URL:', fullPath);
+
+        if (fullPath.includes('/badge/')) {
+            token = fullPath.split('/badge/')[1];
+        }
+        console.log('Token:', token);
+
+        async function loadBadge() {
+            if (!token) {
+                showError('Неверная ссылка', 'QR-код повреждён или недействителен.', 'INVALID_URL');
+                return;
+            }
+
+            // Формируем полный URL к API
+            const apiUrl = window.location.origin + '/api/employees/badge/' + token;
+            console.log('Fetching:', apiUrl);
+
+            try {
+                const res = await fetch(apiUrl);
+                console.log('Response status:', res.status);
+
+                const data = await res.json();
+                console.log('Data:', data);
+
+                if (!res.ok) {
+                    if (res.status === 403) {
+                        showError('Бейдж деактивирован', 'Данный сотрудник больше не числится в компании.', 'DEACTIVATED');
+                    } else {
+                        showError('Бейдж не найден', 'Этот QR-код не привязан ни к одному сотруднику.', 'NOT_FOUND');
+                    }
+                    return;
+                }
+
+                // Name
+                document.getElementById('employeeName').textContent =
+                    data.firstName + ' ' + data.lastName;
+                document.getElementById('employeePosition').textContent = data.position;
+
+                // Info
+                document.getElementById('infoPosition').textContent = data.position;
+                document.getElementById('infoDepartment').textContent = data.department;
+                document.getElementById('infoId').textContent = data.employeeId;
+
+                // Photo
+                if (data.photo && data.photo !== '/uploads/photos/default-avatar.png') {
+                    var img = document.getElementById('photoImg');
+                    img.src = data.photo;
+                    img.style.display = 'block';
+                    document.getElementById('photoPlaceholder').style.display = 'none';
+                }
+
+                // Status
+                var tag = document.getElementById('verifiedTag');
+                var tagText = document.getElementById('verifiedText');
+                var dot = document.getElementById('onlineDot');
+
+                if (data.status === 'active') {
+                    tag.className = 'verified-tag active';
+                    tagText.textContent = 'Подтверждённый сотрудник';
+                    dot.className = 'online-dot';
+                } else {
+                    tag.className = 'verified-tag inactive';
+                    tagText.textContent = 'Неактивен';
+                    dot.className = 'online-dot inactive';
+                }
+
+                // Discount
+                var tiers = {
+                    standard: { name: 'Standard', percent: 10 },
+                    premium: { name: 'Premium', percent: 15 },
+                    vip: { name: 'VIP', percent: 20 }
+                };
+                var tier = tiers[data.discountTier] || tiers.standard;
+                document.getElementById('tierName').textContent = tier.name;
+                document.getElementById('tierPercent').innerHTML = tier.percent + '<span>%</span>';
+
+                // Date
+                document.getElementById('footerDate').textContent =
+                    new Date().toLocaleDateString('ru-RU', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric'
+                    });
+
+                // Show content
+                document.getElementById('stateLoading').style.display = 'none';
+                document.getElementById('stateContent').style.display = 'block';
+
+                lucide.createIcons();
+
+            } catch (err) {
+                console.error('Fetch error:', err);
+                showError('Нет соединения', 'Не удалось загрузить данные. Ошибка: ' + err.message, 'CONNECTION');
+            }
+        }
+
+        function showError(title, desc, code) {
+            document.getElementById('stateLoading').style.display = 'none';
+            document.getElementById('errorTitle').textContent = title;
+            document.getElementById('errorDesc').textContent = desc;
+            document.getElementById('errorCode').textContent = code;
+            document.getElementById('stateError').style.display = 'block';
+            lucide.createIcons();
+        }
+
+        loadBadge();
+    </script>
+</body>
+</html>

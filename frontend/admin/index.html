@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AYACOM — Панель управления</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <style>
+        :root {
+            --primary: #ED2424;
+            --primary-hover: #D91E1E;
+            --primary-soft: rgba(237, 36, 36, 0.06);
+            --primary-border: rgba(237, 36, 36, 0.15);
+            --bg: #F5F5F7;
+            --white: #FFFFFF;
+            --text: #111111;
+            --text-secondary: #71717A;
+            --text-muted: #A1A1AA;
+            --border: #E4E4E7;
+            --border-hover: #D4D4D8;
+            --sidebar-bg: #FFFFFF;
+            --sidebar-width: 260px;
+            --header-height: 64px;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --transition: all 0.2s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-logo { height: 28px; }
+
+        .sidebar-nav {
+            padding: 12px;
+            flex: 1;
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 16px 12px 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 2px;
+        }
+
+        .nav-item i {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .nav-item:hover {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .nav-item.active {
+            background: var(--primary-soft);
+            color: var(--primary);
+        }
+
+        .nav-item .badge {
+            margin-left: auto;
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .sidebar-footer {
+            padding: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--primary-soft);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-avatar i {
+            width: 18px;
+            height: 18px;
+            color: var(--primary);
+        }
+
+        .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .user-role {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 6px;
+            display: flex;
+            transition: var(--transition);
+        }
+
+        .logout-btn i {
+            width: 18px;
+            height: 18px;
+            color: var(--text-muted);
+        }
+
+        .logout-btn:hover {
+            background: #FEF2F2;
+        }
+
+        .logout-btn:hover i {
+            color: var(--primary);
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            height: var(--header-height);
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            z-index: 90;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .page-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .search-global {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-global:hover { border-color: var(--border-hover); }
+
+        .search-global i {
+            width: 16px;
+            height: 16px;
+            color: var(--text-muted);
+        }
+
+        .search-global span {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .search-global kbd {
+            font-size: 11px;
+            font-family: 'Inter', sans-serif;
+            padding: 2px 6px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-muted);
+            margin-left: 12px;
+        }
+
+        .header-icon-btn {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .header-icon-btn i {
+            width: 18px;
+            height: 18px;
+            color: var(--text-secondary);
+        }
+
+        .header-icon-btn:hover { background: var(--bg); }
+
+        .notification-dot {
+            position: absolute;
+            top: 7px;
+            right: 7px;
+            width: 7px;
+            height: 7px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 1.5px solid var(--white);
+        }
+
+        .main {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--header-height);
+            padding: 32px;
+            min-height: calc(100vh - var(--header-height));
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover { box-shadow: var(--shadow-md); }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon i {
+            width: 20px;
+            height: 20px;
+        }
+
+        .stat-icon.red { background: var(--primary-soft); }
+        .stat-icon.red i { color: var(--primary); }
+        .stat-icon.green { background: rgba(22, 163, 74, 0.06); }
+        .stat-icon.green i { color: #16A34A; }
+        .stat-icon.orange { background: rgba(234, 88, 12, 0.06); }
+        .stat-icon.orange i { color: #EA580C; }
+        .stat-icon.blue { background: rgba(37, 99, 235, 0.06); }
+        .stat-icon.blue i { color: #2563EB; }
+
+        .stat-trend {
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .stat-trend i { width: 14px; height: 14px; }
+        .stat-trend.up { color: #16A34A; }
+        .stat-trend.down { color: var(--primary); }
+
+        .stat-value {
+            font-size: 30px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .section-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .section-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .search-box:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-soft);
+            background: var(--white);
+        }
+
+        .search-box i {
+            width: 16px;
+            height: 16px;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .search-box input {
+            border: none;
+            background: none;
+            outline: none;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            width: 200px;
+        }
+
+        .search-box input::placeholder { color: var(--text-muted); }
+
+        .filter-btn, select.filter-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .filter-btn i { width: 16px; height: 16px; }
+
+        select.filter-btn:hover {
+            background: var(--bg);
+            border-color: var(--border-hover);
+        }
+
+        select.filter-btn:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-soft);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .btn i { width: 16px; height: 16px; }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover { background: var(--primary-hover); }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover { background: var(--bg); }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            text-align: left;
+            padding: 12px 24px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .table td {
+            padding: 16px 24px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        .table tr:last-child td { border-bottom: none; }
+        .table tr:hover td { background: rgba(0,0,0,0.01); }
+
+        .employee-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .employee-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            object-fit: cover;
+            background: var(--bg);
+            border: 1px solid var(--border);
+        }
+
+        .employee-info { min-width: 0; }
+
+        .employee-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .employee-email {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .status-pill.active {
+            background: rgba(22, 163, 74, 0.06);
+            color: #16A34A;
+        }
+
+        .status-pill.active .status-dot { background: #16A34A; }
+
+        .status-pill.inactive {
+            background: rgba(113, 113, 122, 0.06);
+            color: #71717A;
+        }
+
+        .status-pill.inactive .status-dot { background: #71717A; }
+
+        .tier-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .tier-badge.standard {
+            background: rgba(113, 113, 122, 0.06);
+            color: #71717A;
+        }
+
+        .tier-badge.premium {
+            background: rgba(37, 99, 235, 0.06);
+            color: #2563EB;
+        }
+
+        .tier-badge.vip {
+            background: var(--primary-soft);
+            color: var(--primary);
+        }
+
+        .actions-cell {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: var(--radius-sm);
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .action-btn i {
+            width: 16px;
+            height: 16px;
+            color: var(--text-muted);
+        }
+
+        .action-btn:hover { background: var(--bg); }
+        .action-btn:hover i { color: var(--text); }
+
+        .action-btn.danger:hover { background: #FEF2F2; }
+        .action-btn.danger:hover i { color: #DC2626; }
+
+        .table-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .table-info {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 560px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalIn 0.3s ease-out;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.96) translateY(8px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 24px 0;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close i {
+            width: 16px;
+            height: 16px;
+            color: var(--text-secondary);
+        }
+
+        .modal-close:hover { background: var(--bg); }
+
+        .modal-body { padding: 24px; }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 16px 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group { margin-bottom: 20px; }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-input:hover, .form-select:hover { border-color: var(--border-hover); }
+
+        .form-input:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-soft);
+        }
+
+        .form-input::placeholder { color: var(--text-muted); }
+
+        .photo-upload {
+            border: 1.5px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 20px;
+        }
+
+        .photo-upload:hover {
+            border-color: var(--primary-border);
+            background: var(--primary-soft);
+        }
+
+        .photo-upload input { display: none; }
+
+        .photo-upload i {
+            width: 32px;
+            height: 32px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .photo-upload p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .photo-upload .hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .photo-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius);
+            object-fit: cover;
+            border: 1px solid var(--border);
+        }
+
+        .discount-input-group { text-align: center; }
+
+        .discount-level-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 6px;
+        }
+
+        .discount-input-wrapper { position: relative; }
+
+        .discount-input {
+            text-align: center;
+            padding-right: 28px !important;
+            font-weight: 600;
+        }
+
+        .discount-suffix {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .restaurant-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .restaurant-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary-soft);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .restaurant-icon i {
+            width: 16px;
+            height: 16px;
+            color: var(--primary);
+        }
+
+        .discount-cell {
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .qr-display {
+            text-align: center;
+            padding: 16px 0;
+        }
+
+        .qr-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+
+        .qr-image {
+            width: 220px;
+            height: 220px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 12px;
+            background: var(--white);
+        }
+
+        .qr-url {
+            margin-top: 16px;
+            padding: 10px 14px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            color: var(--text-muted);
+            word-break: break-all;
+            font-family: monospace;
+        }
+
+        .qr-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state i {
+            width: 48px;
+            height: 48px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            font-size: 13px;
+            font-weight: 500;
+            animation: toastIn 0.3s ease-out;
+            min-width: 300px;
+        }
+
+        .toast i {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .toast.success { border-left: 3px solid #16A34A; }
+        .toast.success i { color: #16A34A; }
+        .toast.error { border-left: 3px solid var(--primary); }
+        .toast.error i { color: var(--primary); }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .mobile-toggle {
+            display: none;
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--white);
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .mobile-toggle i {
+            width: 18px;
+            height: 18px;
+            color: var(--text);
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                box-shadow: var(--shadow-md);
+            }
+            .sidebar.open { transform: translateX(0); }
+            .header { left: 0; }
+            .main { margin-left: 0; }
+            .mobile-toggle { display: flex; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 640px) {
+            .main { padding: 20px 16px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .section-header { flex-direction: column; gap: 12px; align-items: stretch; }
+            .section-actions { flex-wrap: wrap; }
+            .table th, .table td { padding: 12px 16px; }
+            .table .hide-mobile { display: none; }
+        }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+    </style>
+</head>
+<body>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="/admin/assets/logo.png" alt="AYACOM" class="sidebar-logo">
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-label">Главная</div>
+            <a class="nav-item active" onclick="showPage('dashboard', this)">
+                <i data-lucide="layout-dashboard"></i>
+                Дашборд
+            </a>
+
+            <div class="nav-label">Управление</div>
+            <a class="nav-item" onclick="showPage('employees', this)">
+                <i data-lucide="users"></i>
+                Сотрудники
+                <span class="badge" id="employeeCount">0</span>
+            </a>
+            <a class="nav-item" onclick="showPage('restaurants', this)">
+                <i data-lucide="utensils"></i>
+                Рестораны
+            </a>
+            <a class="nav-item" onclick="showPage('qrcodes', this)">
+                <i data-lucide="qr-code"></i>
+                QR-коды
+            </a>
+
+            <div class="nav-label">Система</div>
+            <a class="nav-item" onclick="showPage('settings', this)">
+                <i data-lucide="settings"></i>
+                Настройки
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i data-lucide="user"></i>
+                </div>
+                <div class="user-details">
+                    <div class="user-name" id="currentUser">Admin</div>
+                    <div class="user-role" id="currentRole">HR Manager</div>
+                </div>
+                <button class="logout-btn" onclick="logout()" title="Выйти">
+                    <i data-lucide="log-out"></i>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <header class="header">
+        <div class="header-left">
+            <button class="mobile-toggle" onclick="toggleSidebar()">
+                <i data-lucide="menu"></i>
+            </button>
+            <h1 class="page-title" id="pageTitle">Дашборд</h1>
+        </div>
+        <div class="header-right">
+            <div class="search-global">
+                <i data-lucide="search"></i>
+                <span>Поиск...</span>
+                <kbd>⌘K</kbd>
+            </div>
+            <button class="header-icon-btn">
+                <i data-lucide="bell"></i>
+                <span class="notification-dot"></span>
+            </button>
+        </div>
+    </header>
+
+    <main class="main">
+
+        <div id="page-dashboard">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon red">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <div class="stat-trend up">
+                            <i data-lucide="trending-up"></i>
+                            +12%
+                        </div>
+                    </div>
+                    <div class="stat-value" id="statTotal">0</div>
+                    <div class="stat-label">Всего сотрудников</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon green">
+                            <i data-lucide="user-check"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="statActive">0</div>
+                    <div class="stat-label">Активных бейджей</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon orange">
+                            <i data-lucide="user-x"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="statInactive">0</div>
+                    <div class="stat-label">Деактивированных</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon blue">
+                            <i data-lucide="utensils"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="statRestaurants">0</div>
+                    <div class="stat-label">Ресторанов</div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">Последние сотрудники</h2>
+                    <button class="btn btn-secondary" onclick="showPage('employees', document.querySelectorAll('.nav-item')[2])">
+                        <i data-lucide="arrow-right"></i>
+                        Все
+                    </button>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Сотрудник</th>
+                            <th class="hide-mobile">Отдел</th>
+                            <th>Статус</th>
+                            <th class="hide-mobile">Дата</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentTable">
+                        <tr>
+                            <td colspan="4">
+                                <div class="empty-state">
+                                    <i data-lucide="users"></i>
+                                    <h3>Пока пусто</h3>
+                                    <p>Добавьте первого сотрудника</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="page-employees" style="display: none;">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">Сотрудники</h2>
+                    <div class="section-actions">
+                        <div class="search-box">
+                            <i data-lucide="search"></i>
+                            <input type="text" id="searchInput" placeholder="Поиск..." oninput="searchEmployees(this.value)">
+                        </div>
+                        
+                        <select class="filter-btn" id="statusFilter" onchange="filterEmployees()">
+                            <option value="all">Все статусы</option>
+                            <option value="active">Активные</option>
+                            <option value="inactive">Неактивные</option>
+                        </select>
+                        
+                        <select class="filter-btn" id="departmentFilter" onchange="filterEmployees()">
+                            <option value="all">Все отделы</option>
+                        </select>
+                        
+                        <select class="filter-btn" id="sortBy" onchange="sortEmployees()">
+                            <option value="createdAt">По дате добавления</option>
+                            <option value="firstName">По имени (А-Я)</option>
+                            <option value="lastName">По фамилии (А-Я)</option>
+                            <option value="employeeId">По ID</option>
+                            <option value="department">По отделу</option>
+                        </select>
+
+                        <button class="btn btn-primary" onclick="openAddModal()">
+                            <i data-lucide="plus"></i>
+                            Добавить
+                        </button>
+                    </div>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Сотрудник</th>
+                            <th>ID</th>
+                            <th class="hide-mobile">Отдел</th>
+                            <th class="hide-mobile">Должность</th>
+                            <th>Уровень</th>
+                            <th>Статус</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="employeesTable">
+                        <tr>
+                            <td colspan="7">
+                                <div class="empty-state">
+                                    <i data-lucide="user-plus"></i>
+                                    <h3>Нет сотрудников</h3>
+                                    <p>Нажмите «Добавить» чтобы создать первого</p>
+                                    <button class="btn btn-primary" onclick="openAddModal()">
+                                        <i data-lucide="plus"></i>
+                                        Добавить сотрудника
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="table-footer" id="tableFooter" style="display:none;">
+                    <div class="table-info">
+                        Показано <strong id="showingCount">0</strong> из <strong id="totalCount">0</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-restaurants" style="display: none;">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">Рестораны-партнёры</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-primary" onclick="openRestaurantModal()">
+                            <i data-lucide="plus"></i>
+                            Добавить ресторан
+                        </button>
+                    </div>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Ресторан</th>
+                            <th>Адрес</th>
+                            <th>Standard</th>
+                            <th>Premium</th>
+                            <th>VIP</th>
+                            <th>Контакт</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="restaurantsTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="page-settings" style="display: none;">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">Настройки</h2>
+                </div>
+                <div style="padding: 40px 24px;">
+                    <div class="empty-state">
+                        <i data-lucide="settings"></i>
+                        <h3>Настройки</h3>
+                        <p>Раздел в разработке</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-qrcodes" style="display: none;">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">QR-коды</h2>
+                </div>
+                <div style="padding: 40px 24px;">
+                    <div class="empty-state">
+                        <i data-lucide="qr-code"></i>
+                        <h3>Управление QR-кодами</h3>
+                        <p>QR-коды создаются автоматически при добавлении сотрудника</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <div class="modal-overlay" id="employeeModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Новый сотрудник</h2>
+                <button class="modal-close" onclick="closeModal()">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="employeeForm" onsubmit="saveEmployee(event)">
+
+                    <div class="photo-upload" onclick="document.getElementById('photoInput').click()">
+                        <div id="photoPreview">
+                            <i data-lucide="image-plus"></i>
+                            <p>Загрузить фото</p>
+                            <p class="hint">JPG, PNG до 5MB</p>
+                        </div>
+                        <input type="file" id="photoInput" accept="image/*" onchange="previewPhoto(this)">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Имя</label>
+                            <input type="text" class="form-input" name="firstName" placeholder="Имя" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Фамилия</label>
+                            <input type="text" class="form-input" name="lastName" placeholder="Фамилия" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Отчество</label>
+                        <input type="text" class="form-input" name="middleName" placeholder="Отчество">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">ID сотрудника</label>
+                            <input type="text" class="form-input" name="employeeId" placeholder="AYA-0001" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" name="email" placeholder="email@ayacom.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Должность</label>
+                            <input type="text" class="form-input" name="position" placeholder="Должность" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Отдел</label>
+                            <input type="text" class="form-input" name="department" placeholder="Отдел" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Телефон</label>
+                            <input type="tel" class="form-input" name="phone" placeholder="+7 (___) ___-__-__">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Уровень скидки</label>
+                            <select class="form-select" name="discountTier">
+                                <option value="standard">Standard</option>
+                                <option value="premium">Premium</option>
+                                <option value="vip">VIP</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Отмена</button>
+                <button class="btn btn-primary" onclick="document.getElementById('employeeForm').requestSubmit()">
+                    <i data-lucide="save"></i>
+                    Сохранить
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="restaurantModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="restaurantModalTitle">Новый ресторан</h2>
+                <button class="modal-close" onclick="closeRestaurantModal()">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="restaurantForm" onsubmit="saveRestaurant(event)">
+
+                    <div class="form-group">
+                        <label class="form-label">Название ресторана</label>
+                        <input type="text" class="form-input" name="name" placeholder='Ресторан "Уют"' required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Адрес</label>
+                        <input type="text" class="form-input" name="address" placeholder="ул. Абая 150">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Контактное лицо</label>
+                            <input type="text" class="form-input" name="contactPerson" placeholder="Имя">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Телефон</label>
+                            <input type="tel" class="form-input" name="contactPhone" placeholder="+7 777 123 4567">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 8px;">
+                        <label class="form-label" style="margin-bottom: 12px;">Скидки по уровням</label>
+
+                        <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+                            <div class="discount-input-group">
+                                <label class="discount-level-label">Standard</label>
+                                <div class="discount-input-wrapper">
+                                    <input type="number" class="form-input discount-input" name="discountStandard" value="10" min="0" max="100" required>
+                                    <span class="discount-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="discount-input-group">
+                                <label class="discount-level-label">Premium</label>
+                                <div class="discount-input-wrapper">
+                                    <input type="number" class="form-input discount-input" name="discountPremium" value="15" min="0" max="100" required>
+                                    <span class="discount-suffix">%</span>
+                                </div>
+                            </div>
+                            <div class="discount-input-group">
+                                <label class="discount-level-label">VIP</label>
+                                <div class="discount-input-wrapper">
+                                    <input type="number" class="form-input discount-input" name="discountVip" value="20" min="0" max="100" required>
+                                    <span class="discount-suffix">%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeRestaurantModal()">Отмена</button>
+                <button class="btn btn-primary" onclick="document.getElementById('restaurantForm').requestSubmit()">
+                    <i data-lucide="save"></i>
+                    Сохранить
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="qrModal">
+        <div class="modal" style="max-width: 420px;">
+            <div class="modal-header">
+                <h2 class="modal-title">QR-код бейджа</h2>
+                <button class="modal-close" onclick="closeQRModal()">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="qr-display">
+                    <p class="qr-name" id="qrEmployeeName"></p>
+                    <img id="qrImage" src="" alt="QR" class="qr-image">
+                    <div class="qr-url" id="qrUrl"></div>
+                    <div class="qr-actions">
+                        <button class="btn btn-primary" onclick="downloadQR()">
+                            <i data-lucide="download"></i>
+                            Скачать
+                        </button>
+                        <button class="btn btn-secondary" onclick="printQR()">
+                            <i data-lucide="printer"></i>
+                            Печать
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const API_URL = '/api';
+        let token = localStorage.getItem('adminToken');
+        let allEmployees = [];
+        let filteredEmployees = [];
+        let currentEmployees = [];
+        let editingEmployeeId = null;
+        let editingRestaurantId = null;
+
+        if (!token) {
+            window.location.href = '/admin/login.html';
+        }
+
+        document.getElementById('currentUser').textContent =
+            localStorage.getItem('ayacom_user') || 'Admin';
+
+        function getHeaders() {
+            return { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
+        }
+
+        function showPage(page, navEl) {
+            document.querySelectorAll('[id^="page-"]').forEach(p => p.style.display = 'none');
+            document.getElementById(`page-${page}`).style.display = 'block';
+
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            if (navEl) navEl.classList.add('active');
+
+            const titles = {
+                dashboard: 'Дашборд',
+                employees: 'Сотрудники',
+                restaurants: 'Рестораны',
+                qrcodes: 'QR-коды',
+                settings: 'Настройки'
+            };
+            document.getElementById('pageTitle').textContent = titles[page] || '';
+
+            if (page === 'dashboard') loadDashboard();
+            if (page === 'employees') loadEmployees();
+            if (page === 'restaurants') loadRestaurants();
+
+            document.getElementById('sidebar').classList.remove('open');
+            lucide.createIcons();
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        async function loadDashboard() {
+            try {
+                const res = await fetch(`${API_URL}/admin/dashboard`, { headers: getHeaders() });
+                const data = await res.json();
+                document.getElementById('statTotal').textContent = data.totalEmployees || 0;
+                document.getElementById('statActive').textContent = data.activeEmployees || 0;
+                document.getElementById('statInactive').textContent = data.inactiveEmployees || 0;
+                document.getElementById('statRestaurants').textContent = data.totalRestaurants || 0;
+                document.getElementById('employeeCount').textContent = data.activeEmployees || 0;
+            } catch (e) { console.error(e); }
+        }
+
+        async function loadEmployees(search = '') {
+            try {
+                const url = search ? `${API_URL}/employees?search=${search}` : `${API_URL}/employees`;
+                const res = await fetch(url, { headers: getHeaders() });
+                const data = await res.json();
+                
+                allEmployees = data.employees || [];
+                populateDepartmentFilter();
+                filterEmployees();
+                
+            } catch (e) { 
+                console.error(e); 
+                showToast('Ошибка загрузки', 'error');
+            }
+        }
+
+        function populateDepartmentFilter() {
+            const departments = [...new Set(allEmployees.map(e => e.department))].sort();
+            const select = document.getElementById('departmentFilter');
+            
+            if (!select) return;
+            
+            const currentValue = select.value;
+            
+            select.innerHTML = '<option value="all">Все отделы</option>';
+            departments.forEach(dept => {
+                const option = document.createElement('option');
+                option.value = dept;
+                option.textContent = dept;
+                select.appendChild(option);
+            });
+            
+            select.value = currentValue;
+        }
+
+        function filterEmployees() {
+            const statusFilter = document.getElementById('statusFilter')?.value || 'all';
+            const departmentFilter = document.getElementById('departmentFilter')?.value || 'all';
+            const searchQuery = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            
+            filteredEmployees = allEmployees.filter(emp => {
+                if (statusFilter !== 'all' && emp.status !== statusFilter) return false;
+                if (departmentFilter !== 'all' && emp.department !== departmentFilter) return false;
+                
+                if (searchQuery) {
+                    const searchText = `${emp.firstName} ${emp.lastName} ${emp.email} ${emp.employeeId}`.toLowerCase();
+                    if (!searchText.includes(searchQuery)) return false;
+                }
+                
+                return true;
+            });
+            
+            sortEmployees();
+        }
+
+        function sortEmployees() {
+            const sortBy = document.getElementById('sortBy')?.value || 'createdAt';
+            currentEmployees = [...filteredEmployees];
+            
+            currentEmployees.sort((a, b) => {
+                switch(sortBy) {
+                    case 'firstName':
+                        return a.firstName.localeCompare(b.firstName, 'ru');
+                    case 'lastName':
+                        return a.lastName.localeCompare(b.lastName, 'ru');
+                    case 'employeeId':
+                        return a.employeeId.localeCompare(b.employeeId);
+                    case 'department':
+                        return a.department.localeCompare(b.department, 'ru');
+                    case 'createdAt':
+                    default:
+                        return new Date(b.createdAt) - new Date(a.createdAt);
+                }
+            });
+            
+            renderEmployees(currentEmployees);
+        }
+
+        function renderEmployees(employees) {
+            const tbody = document.getElementById('employeesTable');
+            const footer = document.getElementById('tableFooter');
+
+            if (!employees.length) {
+                tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state">
+                    <i data-lucide="user-plus"></i>
+                    <h3>${allEmployees.length ? 'Нет результатов' : 'Нет сотрудников'}</h3>
+                    <p>${allEmployees.length ? 'Попробуйте изменить фильтры' : 'Нажмите «Добавить»'}</p>
+                    ${!allEmployees.length ? '<button class="btn btn-primary" onclick="openAddModal()"><i data-lucide="plus"></i>Добавить сотрудника</button>' : ''}
+                </div></td></tr>`;
+                if (footer) footer.style.display = 'none';
+                lucide.createIcons();
+                return;
+            }
+
+            tbody.innerHTML = employees.map(emp => `
+                <tr>
+                    <td>
+                        <div class="employee-cell">
+                            <img class="employee-avatar" src="${emp.photo || '/uploads/photos/default-avatar.png'}" alt="">
+                            <div class="employee-info">
+                                <div class="employee-name">${emp.firstName} ${emp.lastName}</div>
+                                <div class="employee-email">${emp.email}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${emp.employeeId}</td>
+                    <td class="hide-mobile">${emp.department}</td>
+                    <td class="hide-mobile">${emp.position}</td>
+                    <td><span class="tier-badge ${emp.discountTier}">${emp.discountTier}</span></td>
+                    <td><span class="status-pill ${emp.status}"><span class="status-dot"></span>${emp.status === 'active' ? 'Активен' : 'Неактивен'}</span></td>
+                    <td>
+                        <div class="actions-cell">
+                            <button class="action-btn" onclick="showQR('${emp._id}')" title="QR-код">
+                                <i data-lucide="qr-code"></i>
+                            </button>
+                            <button class="action-btn" onclick="editEmployee('${emp._id}')" title="Редактировать">
+                                <i data-lucide="pencil"></i>
+                            </button>
+                            ${emp.status === 'active' ? 
+                                `<button class="action-btn danger" onclick="deactivateEmployee('${emp._id}')" title="Деактивировать">
+                                    <i data-lucide="trash-2"></i>
+                                </button>` :
+                                `<button class="action-btn" onclick="activateEmployee('${emp._id}')" title="Активировать" style="color: #16A34A">
+                                    <i data-lucide="check-circle"></i>
+                                </button>`
+                            }
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+            
+            if (footer) {
+                footer.style.display = 'flex';
+                document.getElementById('showingCount').textContent = employees.length;
+                document.getElementById('totalCount').textContent = allEmployees.length;
+            }
+            
+            lucide.createIcons();
+        }
+
+        let searchTimeout;
+        function searchEmployees(q) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => filterEmployees(), 300);
+        }
+
+        async function activateEmployee(id) {
+            if (!confirm('Активировать сотрудника?')) return;
+            
+            try {
+                const res = await fetch(`${API_URL}/employees/${id}`, {
+                    method: 'PUT',
+                    headers: getHeaders(),
+                    body: JSON.stringify({ status: 'active' })
+                });
+                
+                if (res.ok) {
+                    loadEmployees();
+                    showToast('Сотрудник активирован', 'success');
+                }
+            } catch (e) { 
+                showToast('Ошибка', 'error'); 
+            }
+        }
+
+        function openAddModal() {
+            editingEmployeeId = null;
+            document.getElementById('modalTitle').textContent = 'Новый сотрудник';
+            document.getElementById('employeeForm').reset();
+            document.getElementById('photoPreview').innerHTML = `
+                <i data-lucide="image-plus"></i><p>Загрузить фото</p><p class="hint">JPG, PNG до 5MB</p>`;
+            document.getElementById('employeeModal').classList.add('active');
+            lucide.createIcons();
+        }
+
+        function closeModal() {
+            editingEmployeeId = null;
+            document.getElementById('employeeModal').classList.remove('active');
+        }
+
+        function editEmployee(id) {
+            const emp = allEmployees.find(e => e._id === id);
+            if (!emp) return;
+
+            editingEmployeeId = id;
+            document.getElementById('modalTitle').textContent = 'Редактировать сотрудника';
+            
+            const form = document.getElementById('employeeForm');
+            form.querySelector('[name="firstName"]').value = emp.firstName;
+            form.querySelector('[name="lastName"]').value = emp.lastName;
+            form.querySelector('[name="middleName"]').value = emp.middleName || '';
+            form.querySelector('[name="employeeId"]').value = emp.employeeId;
+            form.querySelector('[name="email"]').value = emp.email;
+            form.querySelector('[name="position"]').value = emp.position;
+            form.querySelector('[name="department"]').value = emp.department;
+            form.querySelector('[name="phone"]').value = emp.phone || '';
+            form.querySelector('[name="discountTier"]').value = emp.discountTier;
+            
+            if (emp.photo) {
+                document.getElementById('photoPreview').innerHTML = 
+                    `<img src="${emp.photo}" class="photo-preview">`;
+            }
+            
+            document.getElementById('employeeModal').classList.add('active');
+        }
+
+        function previewPhoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('photoPreview').innerHTML =
+                        `<img src="${e.target.result}" class="photo-preview">`;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        async function saveEmployee(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const photoInput = document.getElementById('photoInput');
+            if (photoInput.files[0]) formData.append('photo', photoInput.files[0]);
+
+            try {
+                const method = editingEmployeeId ? 'PUT' : 'POST';
+                const url = editingEmployeeId 
+                    ? `${API_URL}/employees/${editingEmployeeId}` 
+                    : `${API_URL}/employees`;
+
+                const res = await fetch(url, {
+                    method: method,
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData
+                });
+                
+                const data = await res.json();
+                
+                if (data.success) {
+                    closeModal();
+                    loadEmployees();
+                    
+                    if (!editingEmployeeId) {
+                        showQRDirect(data.employee);
+                    }
+                    
+                    const message = editingEmployeeId ? 'Сотрудник обновлён' : 'Сотрудник добавлен';
+                    showToast(message, 'success');
+                    
+                    editingEmployeeId = null;
+                } else {
+                    showToast(data.error || 'Ошибка', 'error');
+                }
+            } catch (e) {
+                showToast('Ошибка сервера', 'error');
+                console.error(e);
+            }
+        }
+
+        function showQR(id) {
+            const emp = allEmployees.find(e => e._id === id);
+            if (emp) showQRDirect(emp);
+        }
+
+        function showQRDirect(emp) {
+            document.getElementById('qrEmployeeName').textContent = `${emp.firstName} ${emp.lastName}`;
+            document.getElementById('qrImage').src = emp.qrCode;
+            document.getElementById('qrUrl').textContent = `${window.location.origin}/badge/${emp.qrUniqueToken}`;
+            document.getElementById('qrModal').classList.add('active');
+        }
+
+        function closeQRModal() {
+            document.getElementById('qrModal').classList.remove('active');
+        }
+
+        function downloadQR() {
+            const a = document.createElement('a');
+            a.download = 'ayacom-badge-qr.png';
+            a.href = document.getElementById('qrImage').src;
+            a.click();
+        }
+
+        function printQR() {
+            const img = document.getElementById('qrImage').src;
+            const name = document.getElementById('qrEmployeeName').textContent;
+            const w = window.open();
+            w.document.write(`<html><body style="text-align:center;padding:40px;font-family:Inter,sans-serif">
+                <h2>${name}</h2><img src="${img}" style="width:300px"><p style="color:#999;margin-top:16px">AYACOM Badge</p></body></html>`);
+            w.print();
+        }
+
+        async function deactivateEmployee(id) {
+            if (!confirm('Деактивировать сотрудника?')) return;
+            try {
+                await fetch(`${API_URL}/employees/${id}`, { method: 'DELETE', headers: getHeaders() });
+                loadEmployees();
+                showToast('Сотрудник деактивирован', 'success');
+            } catch (e) { showToast('Ошибка', 'error'); }
+        }
+
+        async function loadRestaurants() {
+            try {
+                const res = await fetch(`${API_URL}/restaurants`, { headers: getHeaders() });
+                const data = await res.json();
+                
+                if (Array.isArray(data)) {
+                    renderRestaurants(data);
+                } else if (data.restaurants) {
+                    renderRestaurants(data.restaurants);
+                } else {
+                    renderRestaurants([]);
+                }
+            } catch (e) {
+                console.error('Load restaurants error:', e);
+                renderRestaurants([]);
+            }
+        }
+
+        function renderRestaurants(restaurants) {
+            const tbody = document.getElementById('restaurantsTable');
+            if (!restaurants || !restaurants.length) {
+                tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state">
+                    <i data-lucide="utensils"></i><h3>Нет ресторанов</h3>
+                    <p>Добавьте ресторан-партнёр</p>
+                    <button class="btn btn-primary" onclick="openRestaurantModal()" style="margin-top:12px;">
+                        <i data-lucide="plus"></i> Добавить ресторан
+                    </button>
+                    </div></td></tr>`;
+                lucide.createIcons();
+                return;
+            }
+            tbody.innerHTML = restaurants.map(r => `
+                <tr>
+                    <td>
+                        <div class="restaurant-name">
+                            <div class="restaurant-icon"><i data-lucide="utensils"></i></div>
+                            <strong>${r.name}</strong>
+                        </div>
+                    </td>
+                    <td>${r.address || '—'}</td>
+                    <td><span class="discount-cell">${r.discounts?.standard || 0}%</span></td>
+                    <td><span class="discount-cell">${r.discounts?.premium || 0}%</span></td>
+                    <td><span class="discount-cell">${r.discounts?.vip || 0}%</span></td>
+                    <td>${r.contactPerson || '—'}</td>
+                    <td>
+                        <div class="actions-cell">
+                            <button class="action-btn" onclick="editRestaurant('${r._id}')" title="Редактировать">
+                                <i data-lucide="pencil"></i>
+                            </button>
+                            <button class="action-btn danger" onclick="deleteRestaurant('${r._id}')" title="Удалить">
+                                <i data-lucide="trash-2"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function openRestaurantModal() {
+            editingRestaurantId = null;
+            document.getElementById('restaurantModalTitle').textContent = 'Новый ресторан';
+            document.getElementById('restaurantForm').reset();
+            document.getElementById('restaurantModal').classList.add('active');
+            lucide.createIcons();
+        }
+
+        function closeRestaurantModal() {
+            document.getElementById('restaurantModal').classList.remove('active');
+            editingRestaurantId = null;
+        }
+
+        async function editRestaurant(id) {
+            try {
+                const res = await fetch(`${API_URL}/restaurants`, { headers: getHeaders() });
+                const restaurants = await res.json();
+                const r = restaurants.find(rest => rest._id === id);
+                if (!r) return;
+
+                editingRestaurantId = id;
+                document.getElementById('restaurantModalTitle').textContent = 'Редактировать ресторан';
+
+                const form = document.getElementById('restaurantForm');
+                form.name.value = r.name || '';
+                form.address.value = r.address || '';
+                form.contactPerson.value = r.contactPerson || '';
+                form.contactPhone.value = r.contactPhone || '';
+                form.discountStandard.value = r.discounts?.standard || 10;
+                form.discountPremium.value = r.discounts?.premium || 15;
+                form.discountVip.value = r.discounts?.vip || 20;
+
+                document.getElementById('restaurantModal').classList.add('active');
+                lucide.createIcons();
+            } catch (e) {
+                showToast('Ошибка загрузки', 'error');
+            }
+        }
+
+        async function saveRestaurant(event) {
+            event.preventDefault();
+            const form = event.target;
+
+            const body = {
+                name: form.name.value,
+                address: form.address.value,
+                contactPerson: form.contactPerson.value,
+                contactPhone: form.contactPhone.value,
+                discounts: {
+                    standard: parseInt(form.discountStandard.value) || 10,
+                    premium: parseInt(form.discountPremium.value) || 15,
+                    vip: parseInt(form.discountVip.value) || 20
+                }
+            };
+
+            try {
+                const url = editingRestaurantId
+                    ? `${API_URL}/restaurants/${editingRestaurantId}`
+                    : `${API_URL}/restaurants`;
+
+                const method = editingRestaurantId ? 'PUT' : 'POST';
+
+                const res = await fetch(url, {
+                    method,
+                    headers: getHeaders(),
+                    body: JSON.stringify(body)
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    closeRestaurantModal();
+                    loadRestaurants();
+                    showToast(
+                        editingRestaurantId ? 'Ресторан обновлён' : 'Ресторан добавлен',
+                        'success'
+                    );
+                } else {
+                    showToast(data.error || 'Ошибка', 'error');
+                }
+            } catch (e) {
+                showToast('Ошибка сервера', 'error');
+            }
+        }
+
+        async function deleteRestaurant(id) {
+            if (!confirm('Удалить ресторан?')) return;
+            try {
+                await fetch(`${API_URL}/restaurants/${id}`, {
+                    method: 'DELETE',
+                    headers: getHeaders()
+                });
+                loadRestaurants();
+                showToast('Ресторан удалён', 'success');
+            } catch (e) {
+                showToast('Ошибка', 'error');
+            }
+        }
+
+        function showToast(msg, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const icon = type === 'success' ? 'check-circle-2' : 'alert-circle';
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<i data-lucide="${icon}"></i><span>${msg}</span>`;
+            container.appendChild(toast);
+            lucide.createIcons();
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
+        }
+
+        function logout() {
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('ayacom_role');
+            localStorage.removeItem('ayacom_user');
+            window.location.href = '/admin/login.html';
+        }
+
+        loadDashboard();
+    </script>
+</body>
+</html>

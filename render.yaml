@@ -1,0 +1,17 @@
+# Деплой на Render (бесплатный тариф).
+# Render → New → Blueprint → указать этот репозиторий.
+# DATABASE_URL, JWT_SECRET, BASE_URL задаются в разделе Environment.
+services:
+  - type: web
+    name: ayacom-qr-badge
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: BASE_URL
+        sync: false

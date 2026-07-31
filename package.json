@@ -1,0 +1,25 @@
+{
+  "name": "ayacom-qr-badge-supabase",
+  "version": "1.0.0",
+  "description": "AYACOM Corporate QR Badge System (PostgreSQL / Supabase)",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "npx nodemon backend/server.js",
+    "init-db": "node backend/scripts/initDb.js",
+    "seed": "node backend/scripts/seed.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.0.2",
+    "pg": "^8.13.1",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
