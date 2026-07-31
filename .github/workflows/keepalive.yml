@@ -1,0 +1,21 @@
+name: Keep Render awake
+
+# Пингер: не даёт бесплатному сервису Render заснуть.
+# Каждые 5 минут дёргает сайт, чтобы 15 минут тишины никогда не наступали.
+# Работает бесплатно (репозиторий публичный) и не требует сторонних сервисов.
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'   # каждые 5 минут (минимум, разрешённый GitHub)
+  workflow_dispatch:          # позволяет запустить вручную из вкладки Actions
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping site
+        run: |
+          echo "Пингую https://ayacom-qr-badge.onrender.com/ ..."
+          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 40 https://ayacom-qr-badge.onrender.com/)
+          echo "HTTP $code"
+          # 200 = живой; при пробуждении из сна первый ответ может быть медленным — это норма
