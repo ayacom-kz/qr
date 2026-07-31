@@ -3,6 +3,11 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
+// Страховка: не даём одиночной async-ошибке уронить процесс (crash loop на хостинге)
+process.on('unhandledRejection', (reason) => {
+    console.error('⚠️ unhandledRejection:', reason && reason.message ? reason.message : reason);
+});
+
 const { connectDB } = require('./config/db');
 const employeeRoutes = require('./routes/employees');
 const adminRoutes = require('./routes/admin');

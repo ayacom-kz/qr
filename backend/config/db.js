@@ -15,12 +15,22 @@ const pool = new Pool({
         : { rejectUnauthorized: false }
 });
 
+// ⚠️ КРИТИЧНО для прод-хостинга + пулер Supabase:
+// пулер разрывает простаивающие соединения, и пул эмитит событие 'error'.
+// Без этого обработчика Node аварийно завершает процесс (crash loop / no-server).
+// Здесь мы просто логируем — пул сам восстановит соединение при следующем запросе.
+pool.on('error', (err) => {
+    console.error('⚠️ Ошибка простаивающего соединения pg (не критично, пул переподключится):', err.message);
+});
+
 // Небольшой помощник — выполняет SQL и возвращает результат
 async function query(text, params) {
     return pool.query(text, params);
 }
 
-// Проверка соединения при старте сервера
+// Проверка соединения при старте сервера.
+// НЕ роняем процесс при ошибке — веб-сервер должен остаться живым и пройти
+// health-check хостинга; отдельные запросы переподключатся через пул сами.
 async function connectDB() {
     try {
         const res = await pool.query('SELECT current_database() AS db, now() AS time');
@@ -32,15 +42,12 @@ async function connectDB() {
         console.log('');
     } catch (error) {
         console.error('');
-        console.error('❌ ОШИБКА подключения к PostgreSQL:');
+        console.error('❌ Не удалось подключиться к PostgreSQL при старте:');
         console.error(error.message);
+        console.error('Сервер продолжит работу и повторит подключение при первом запросе.');
+        console.error('Проверь DATABASE_URL, активность проекта Supabase и схему (npm run init-db).');
         console.error('');
-        console.error('Проверь:');
-        console.error('1. Правильная ли строка DATABASE_URL в .env');
-        console.error('2. Создан ли проект в Supabase и не на паузе ли он');
-        console.error('3. Выполнена ли инициализация схемы: npm run init-db');
-        console.error('');
-        process.exit(1);
+        // НЕ вызываем process.exit — иначе хостинг уходит в бесконечный рестарт.
     }
 }
 
