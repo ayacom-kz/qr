@@ -16,6 +16,8 @@ jobs:
       - name: Ping site
         run: |
           echo "Пингую https://ayacom-qr-badge.onrender.com/health ..."
-          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 40 https://ayacom-qr-badge.onrender.com/health)
-          echo "HTTP $code"
+          # --max-time 120: холодный старт Render из сна занимает ~40-50с, даём запас.
+          # || true: не роняем workflow, если всё же таймаут.
+          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 120 https://ayacom-qr-badge.onrender.com/health) || true
+          echo "HTTP ${code:-timeout}"
           # 200 = живой; при пробуждении из сна первый ответ может быть медленным — это норма
